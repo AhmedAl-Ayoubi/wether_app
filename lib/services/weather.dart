@@ -7,6 +7,7 @@ class WeatherModel {
   late double temp;
   late int weatherId;
   late String name;
+ // late String city;
 
   Future<void> getCurrentLocationWeather() async {
     Location location = Location();
@@ -16,6 +17,21 @@ class WeatherModel {
       url: 'https://api.openweathermap.org/data/2.5/weather?'
           'lat=${location.lat}&lon=${location.long}'
           '&appid=$kApiKey&units=metric',
+    ).getData();
+
+    temp = weatherInfo['main']['temp'];
+    weatherId = weatherInfo['weather'][0]['id'];
+    name = weatherInfo['name'];
+  }
+
+
+  Future<void> getCurrentLocationWeatherSelected(String c) async {
+    Location location = Location();
+    await location.getCurrentLocation();
+
+    Map<String, dynamic> weatherInfo = await NetworkHelper(
+      url: 'https://api.openweathermap.org/data/2.5/weather?'
+          'q=$c&appid=70eb96a081ea9ad1626f9b1d5d80422d&units=metric',
     ).getData();
 
     temp = weatherInfo['main']['temp'];
